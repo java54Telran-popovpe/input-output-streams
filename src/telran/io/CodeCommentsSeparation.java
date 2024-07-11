@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 public class CodeCommentsSeparation {
 
+	private static Pattern regexpComment = Pattern.compile("^\\s*//");
+	
 	public static void main(String[] args) {
 		// args[0] - file path for file containing both Java class code and comments
 		//args[1] - result file with only code
@@ -22,18 +24,14 @@ public class CodeCommentsSeparation {
 			try (BufferedReader reader = new BufferedReader(new FileReader(args[0]));
 				 PrintWriter codeWriter = new PrintWriter(args[1]);
 				 PrintWriter commentWriter = new PrintWriter(args[2]) ) {
-					 var fileContents = reader.lines().toList();
-					 Pattern regexp = Pattern.compile("^\\s*//");
-					 Matcher matcher;
-					 for( String line: fileContents  ) {
-						 matcher = regexp.matcher(line);
-						 if ( matcher.find() ) {
+					 reader.lines().forEachOrdered( line -> {
+						 if ( isComment(line) ) {
 							 commentWriter.println(line);
 						 } else {
 							 codeWriter.println(line);
 						 }
-				 }
-			}
+					});
+				}
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -47,5 +45,9 @@ public class CodeCommentsSeparation {
 		if ( args.length < 3 ) {
 			throw new Exception("Usage: first argument - existing file, second argument - file name to write code lines only, third argument - file name to write comment lines only" );
 		}
+	}
+	private static boolean isComment(String line) {
+		 return line.stripLeading().startsWith("//");
+		 
 	}
 }

@@ -113,24 +113,26 @@ class InputOutputTest {
 				// TODO Auto-generated method stub
 				return FileVisitResult.CONTINUE;
 			}
+			
+			private void printFileTreeEntry(Path file) {
+				String entryType = Files.isDirectory(file) ? "dir" : "file";
+				System.out.printf("%s - %s", file.getFileName(), entryType);
+			}
+			private void printFileTreeEntryWithError(Path file, String message ) {
+				System.out.print("Error visiting ");
+				printFileTreeEntry(file);
+				System.out.printf(" Reason: %s", message);
+				
+			}
+			private void printOffset(Path file, int baseLevel) {
+				int level = file.getNameCount() - baseLevel - 1;
+				String offset = " ".repeat( level * SINGLE_OFFSET_LENGTH );
+				System.out.print(offset);
+			}
 		});
 		
 	}
-	private void printFileTreeEntry(Path file) {
-		String entryType = Files.isDirectory(file) ? "dir" : "file";
-		System.out.printf("%s - %s", file.getFileName(), entryType);
-	}
-	private void printFileTreeEntryWithError(Path file, String message ) {
-		System.out.print("Error visiting ");
-		printFileTreeEntry(file);
-		System.out.printf(" Reason: %s", message);
-		
-	}
-	private void printOffset(Path file, int baseLevel) {
-		int level = file.getNameCount() - baseLevel - 1;
-		String offset = " ".repeat( level * SINGLE_OFFSET_LENGTH );
-		System.out.print(offset);
-	}
+	
 	
 
 }
