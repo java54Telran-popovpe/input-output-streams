@@ -4,12 +4,9 @@ package telran.io;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.PrintWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CodeCommentsSeparation {
 
-	private static Pattern regexpComment = Pattern.compile("^\\s*//");
 	
 	public static void main(String[] args) {
 		// args[0] - file path for file containing both Java class code and comments
